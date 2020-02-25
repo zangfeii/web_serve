@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const jsonParser = require('jsonparser')
 const cors = require('cors')
+const jwt = require('jsonwebtoken')
+const secret = require('./secret')
 
 const app = express()
   // app.use(cors())
@@ -24,18 +26,42 @@ app.all('*', function(req, res, next) {
   }
 });
 
-// app.use(cors({
-//   origin: ['http://localhost:8080'],
-//   methods: ['GET', 'POST'],
-//   alloweHeaders: ['Conten-Type', 'Authorization']
-// }));
-
-app.use('/user', userRouter)
-app.get('/ii', (req, res) => {
-  res.send('sasass')
+// token请求验证
+app.use((req, res, next) => {
+  if (req.url !== '/user/register' && req.url !== '/user/login') {
+    // const token = req.headers.token || req.query.token || req.body.token
+    const token = req.headers.Authorization
+    if (token) {
+      jwt.verify(token, secret, (err, decoded) => {
+        if (err) {
+          res.send({
+            status: 205,
+            msg: '没有找到token'
+          })
+        } else {
+          req.decoded = decoded
+          console.log("token验证成功");
+          next()
+        }
+      })
+    } else {
+      res.send({
+        status: 206,
+        msg: '没有找到token'
+      })
+    }
+  } else {
+    next()
+  }
 })
 
-app.get('/user', )
+
+
+app.use('/user', userRouter)
+
+app.get('/ii', (req, res) => {
+  res.send("wqwqwqwq")
+})
 app.listen(3000, () => {
   console.log('runing at localhost:3000');
 })

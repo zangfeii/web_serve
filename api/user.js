@@ -67,12 +67,14 @@ module.exports.userLogin = (req, res, next) => {
         }
         const token = jwt.sign({
           id: String(result._id)
-        }, secret)
+        }, secret, {
+          expiresIn: 60 * 60 * 24 // 授权时效24小时
+        })
         return res.send({
           status: 200,
           msg: '登陆成功',
+          token,
           userInfo: userData,
-          token
         })
       } else {
         return res.send({
