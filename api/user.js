@@ -13,11 +13,11 @@ module.exports.userReg = (req, res, next) => {
     pwd: req.body.pwd,
     mobile: req.body.mobile
   })
-  User.findOne({ mobile: usermobile, name: username }, (err, result) => {
+  User.findOne({ mobile: usermobile }, (err, result) => {
       if (result) {
         return res.send({
           status: 203,
-          msg: '该手机号被注册,是否登陆?'
+          msg: '该账号已经被注册'
         })
       } else {
         regUser.save((er, succ) => {
@@ -63,6 +63,7 @@ module.exports.userLogin = (req, res, next) => {
         const userData = {
           'user_id': result._id,
           'name': result.name,
+          'hpic': result.headPic,
           'status': result.status
         }
         const token = jwt.sign({
@@ -78,7 +79,7 @@ module.exports.userLogin = (req, res, next) => {
         })
       } else {
         return res.send({
-          status: 202,
+          status: 204,
           msg: '密码错误'
         })
       }
