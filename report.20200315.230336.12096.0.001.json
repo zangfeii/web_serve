@@ -1,4 +1,3 @@
-
 {
   "header": {
     "reportVersion": 1,
@@ -46,8 +45,7 @@
     "osRelease": "10.0.18362",
     "osVersion": "Windows 10 Home China",
     "osMachine": "x86_64",
-    "cpus": [
-      {
+    "cpus": [{
         "model": "Intel(R) Core(TM) i5-4200H CPU @ 2.80GHz",
         "speed": 2794,
         "user": 1836828,
@@ -84,8 +82,7 @@
         "irq": 17218
       }
     ],
-    "networkInterfaces": [
-      {
+    "networkInterfaces": [{
         "name": "Loopback Pseudo-Interface 1",
         "internal": true,
         "mac": "00:00:00:00:00:00",
@@ -128,8 +125,7 @@
       "Unavailable."
     ]
   },
-  "nativeStack": [
-    {
+  "nativeStack": [{
       "pc": "0x00007ff798b61389",
       "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+10873"
     },
@@ -265,8 +261,7 @@
       "writes": 6
     }
   },
-  "libuv": [
-  ],
+  "libuv": [],
   "environmentVariables": {
     "": "::=::\\",
     "": "C:=C:\\",

@@ -6,7 +6,7 @@ const sd = require('silly-datetime');
 
 
 module.exports = router.post('/uploadPic', function(req, res, next) {
-  let AVATAR_UPLOAD_FOLDER = '/img/user';
+  let AVATAR_UPLOAD_FOLDER = '/img';
   //创建上传表单
   var form = new formidable.IncomingForm();
   //设置编码格式

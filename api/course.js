@@ -1,5 +1,6 @@
 const Course = require('../models/courses')
-  // 根据用户ID查询开的课程
+
+// 根据用户ID查询开的课程
 module.exports.queryCoursesById = (req, res, next) => {
     // const queryIid = req.body.queryUserIid
     const queryIid = req.body.userIid
@@ -51,6 +52,26 @@ module.exports.queryUserEnterCoursesByIds = (req, res, next) => {
       res.send({
         status: 200,
         data: result
+      })
+    }
+  })
+}
+
+//查询当前用户老师的课程信息
+module.exports.queryTecCurrentCourseInfo = (req, res) => {
+  const teacheriid = req.body.teacheriid
+  const courseiid = req.body.courseiid
+  Course.findOne({ _id: courseiid, cteacheriid: teacheriid }, (err, result) => {
+    if (err) {
+      res.send({
+        status: 204,
+        msg: '查询当前课程信息失败',
+      })
+    } else {
+      res.send({
+        status: 200,
+        msg: '查询当前课程信息成功',
+        result
       })
     }
   })
