@@ -20,6 +20,7 @@ const UserSchema = new Schema({
     type: String
   },
   status: {
+    //用户账号状态  1正常  0被禁止登陆
     type: Number,
     default: 1
   },
@@ -30,7 +31,7 @@ const UserSchema = new Schema({
   role: {
     // 默认1代表用户初角色未学生,2代表升级为老师,但还保留学生角色的功能
     type: Number,
-    default: 1
+    default: 2
   }
 
 }, { collection: 'users' })

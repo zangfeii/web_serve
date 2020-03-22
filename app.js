@@ -1,4 +1,9 @@
 const userRouter = require('./routes/user')
+const courseRouter = require('./routes/course')
+const createCourseRouter = require('./routes/createCourse')
+const courseStuRouter = require('./routes/courseStu')
+const courseChaptersRouter = require('./routes/courseChapters')
+const courseTopicRouter = require('./routes/courseTopic')
 const upload = require('./routes/uploadPic')
 const express = require('express')
 const logger = require('morgan')
@@ -32,18 +37,18 @@ app.all('*', function(req, res, next) {
 
 // // token请求验证
 // app.use((req, res, next) => {
-//   if (req.url !== '/user/register' && req.url !== '/user/login' && req.url !== '/contact' && req.url !== '/img/upload') {
-//     // const token = req.headers.token || req.query.token || req.body.token
-//     const token = req.headers.Authorization
+//   const picUrl = ''
+//   if (req.url !== '/api/user/register' && req.url !== '/api/user/login' && req.url !== '/api/contact' && req.url !== '/api/img/upload' && req.url !== '/public') {
+//     // const token = req.headers.token || req.query.token || req.body.token 
+//     const token = req.headers.authorization
 //     if (token) {
 //       jwt.verify(token, secret, (err, decoded) => {
 //         if (err) {
 //           res.send({
 //             status: 205,
-//             msg: '没有找到token'
+//             msg: 'token验证失败'
 //           })
 //         } else {
-//           req.decoded = decoded
 //           console.log("token验证成功");
 //           next()
 //         }
@@ -60,13 +65,32 @@ app.all('*', function(req, res, next) {
 // })
 
 
-
+//用户路由
 app.use('/api/user', userRouter)
 app.use('/api/upload', upload)
+
+//课程路由
+//添加删除课程
+app.use('/api/course', createCourseRouter)
+  //查询课程
+app.use('/api/queryCourse', courseRouter)
+  //用户进入课程
+
+app.use('/api/courseStu', courseStuRouter)
+
+//课程章节
+app.use('/api/chapters', courseChaptersRouter)
+
+//课程话题
+app.use('/api/Topic', courseTopicRouter)
+
+//其他路由
 app.get('/api/contact', (req, res) => {
   res.send(contact)
 })
 app.use('/public', express.static('public'))
+
+
 app.listen(3000, () => {
   console.log('runing at localhost:3000');
 })

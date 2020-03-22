@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const db = 'mongodb://localhost:27017/onlineStuduy'
+mongoose.set('useFindAndModify', false)
 
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
   if (err) {

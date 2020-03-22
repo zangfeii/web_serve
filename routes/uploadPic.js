@@ -69,16 +69,16 @@ module.exports = router.post('/uploadPic', function(req, res, next) {
     // 更改名字和路径
     fs.rename(filesFile.path, newPath, function(err) {
       if (err) {
-        return res.json({
-          "code": 207,
-          "message": "图片上传失败"
+        return res.send({
+          status: 204,
+          msg: '上传失败'
         })
       } else {
-        return res.json({
-          status: '200',
+        return res.send({
+          status: 200,
           msg: "图片上传成功",
           result: {
-            data: AVATAR_UPLOAD_FOLDER + '/' + avatarName
+            data: avatarName
           }
         })
       }
