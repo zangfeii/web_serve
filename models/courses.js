@@ -19,8 +19,8 @@ const CourseSchema = new Schema({
     type: String,
   },
   cstatus: {
-    type: Number,
-    default: 1
+    type: Boolean,
+    default: true
   },
   cincode: {
     type: String

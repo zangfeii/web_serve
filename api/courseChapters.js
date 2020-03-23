@@ -52,7 +52,6 @@ module.exports.insertNewChapter = (req, res, next) => {
   const courseid = req.body.currentcourseiid
   const teciid = req.body.currentteacheriid
   const newChapter = req.body.inputChapter
-  console.log('1111' + newChapter.label);
   courseChapters.findOneAndUpdate({ cc_courseiid: courseid, cc_teacheriid: teciid }, { $push: { cc_chapters: newChapter } }, (err, succ) => {
     if (err) {
       res.send({

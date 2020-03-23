@@ -2,15 +2,14 @@ const courseStu = require('../models/courseStu')
 
 // 添加课程和学生信息
 module.exports.enterCourse = (req, res, next) => {
-  console.log(req);
   const courseEnter = new courseStu({
-    cs_title: req.body.cs_title,
+    // cs_title: req.body.cs_title,
     cs_courseiid: req.body.cs_courseiid,
     cs_teacheriid: req.body.cs_teacheriid,
-    cs_teachername: req.body.cs_teachername,
-    cs_desc: req.body.cs_desc,
+    // cs_teachername: req.body.cs_teachername,
+    // cs_desc: req.body.cs_desc,
     cs_stuiid: req.body.cs_stuiid,
-    cs_stuname: req.body.cs_stuname
+    // cs_stuname: req.body.cs_stuname
   })
 
   courseEnter.save((err, succ) => {
@@ -42,7 +41,6 @@ module.exports.quertyCourseStuBeforeEnterById = (req, res, next) => {
     //     })
     //   } else {
   courseStu.find({ cs_stuiid: queryCourseUserId, cs_courseiid: queryCourseId }, (err, result) => {
-      console.log('11110' + result);
       if (!result.length) {
         res.send({
           status: 200,
@@ -50,8 +48,6 @@ module.exports.quertyCourseStuBeforeEnterById = (req, res, next) => {
         })
       } else {
         //查到该用户已经进入该课程
-        console.log(result);
-        console.log(err);
         res.send({
           status: 210,
           msg: '该用户已经进入该课程了'
@@ -123,4 +119,9 @@ module.exports.singOutCouseById = (req, res) => {
       })
     }
   })
+}
+
+//老师根据学生名名字和电话添加到课程中学习
+module.exports.addCurrentCourseStuByMobileName = (req, res) => {
+
 }

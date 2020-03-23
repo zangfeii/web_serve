@@ -1,5 +1,5 @@
 const User = require('../models/users')
-  // const db = db.db('onlineStuduy')
+const courseStu = require('../models/courseStu')
 const jwt = require('jsonwebtoken')
 
 const secret = require('../secret')
@@ -204,6 +204,57 @@ module.exports.updateUserPwd = (req, res) => {
           msg: '原密码错误'
         })
       }
+    }
+  })
+}
+
+//老师添加学生,根据账号名和手机号查询该用户的id
+module.exports.queryUserIdByNameMobileAdd = (req, res) => {
+  const stuName = req.body.stuName
+  const courseiid = req.body.courseiid
+  const teciid = req.body.teciid
+  const mobile = req.body.mobile
+  User.findOne({ mobile: mobile, name: stuName }, (err, result) => {
+    if (err) {
+      res.send({
+        status: 204,
+        msg: '添加失败'
+      })
+    } else {
+      const stuiid = result._id
+      courseStu.findOne({ cs_courseiid: courseiid, cs_stuiid: stuiid }, (err1, result1) => {
+        if (err1) {
+          res.send({
+            status: 204,
+            msg: '添加失败'
+          })
+        } else {
+          if (result1) {
+            return res.send({
+              status: 207,
+              msg: '该学生已经在该课程中了'
+            })
+          }
+          const tecAddCourseStu = new courseStu({
+            cs_courseiid: courseiid,
+            cs_teacheriid: teciid,
+            cs_stuiid: stuiid
+          })
+          tecAddCourseStu.save((err2, succ) => {
+            if (err1) {
+              res.send({
+                status: 204,
+                msg: '添加失败'
+              })
+            } else {
+              res.send({
+                status: 200,
+                msg: '添加成功'
+              })
+            }
+          })
+        }
+      })
     }
   })
 }

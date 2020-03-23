@@ -55,20 +55,60 @@ module.exports.deleteCoursesById = (req, res) => {
 
 //修改课程封面
 module.exports.updateCourseCoverImg = (req, res) => {
+    const courseiid = req.body.courseiid
+    const teacheriid = req.body.teacheriid
+    const coverImg = req.body.coverImg
+    Course.update({ _id: courseiid, cteacheriid: teacheriid }, { $set: { cpic: coverImg } }, (err, result) => {
+      if (err) {
+        res.send({
+          status: 200,
+          msg: '修改课程封面失败'
+        })
+      } else {
+        res.send({
+          status: 200,
+          msg: '修改封面成功'
+        })
+      }
+    })
+  }
+  //修改课程简介
+module.exports.updateCouseDesc = (req, res) => {
   const courseiid = req.body.courseiid
   const teacheriid = req.body.teacheriid
-  const coverImg = req.body.coverImg
-  Course.update({ _id: courseiid, cteacheriid: teacheriid }, { $set: { cpic: coverImg } }, (err, result) => {
+  const desc = req.body.desc
+  Course.update({ _id: courseiid, cteacheriid: teacheriid }, { $set: { cdesc: desc } }, (err, result) => {
     if (err) {
       res.send({
-        status: 200,
-        msg: '修改课程封面失败'
+        status: 204,
+        msg: '修改简介失败'
       })
     } else {
       res.send({
         status: 200,
-        msg: '修改封面成功'
+        msg: '修改简介成功'
       })
     }
   })
+}
+
+//修改课程状态
+module.exports.updateCouseStatus = (req, res) => {
+  const courseiid = req.body.courseiid
+  const teacheriid = req.body.teacheriid
+  const newstatus = req.body.cstatus
+  Course.update({ _id: courseiid, cteacheriid: teacheriid }, { $set: { cstatus: newstatus } }, (err, result) => {
+    if (err) {
+      res.send({
+        status: 204,
+        msg: '修改失败'
+      })
+    } else {
+      res.send({
+        status: 200,
+        msg: '修改成功'
+      })
+    }
+  })
+
 }
