@@ -1,10 +1,11 @@
 const User = require('../models/users')
 const courseStu = require('../models/courseStu')
+const Notice = require('../models/notice')
 const jwt = require('jsonwebtoken')
 
 const secret = require('../secret')
 const bcrypt = require('bcryptjs')
-
+const sd = require('silly-datetime')
 
 module.exports.userReg = (req, res, next) => {
   const usermobile = req.body.mobile
@@ -214,6 +215,7 @@ module.exports.queryUserIdByNameMobileAdd = (req, res) => {
   const courseiid = req.body.courseiid
   const teciid = req.body.teciid
   const mobile = req.body.mobile
+  const coursename = req.body.coursename
   User.findOne({ mobile: mobile, name: stuName }, (err, result) => {
     if (err) {
       res.send({
@@ -247,9 +249,22 @@ module.exports.queryUserIdByNameMobileAdd = (req, res) => {
                 msg: '添加失败'
               })
             } else {
-              res.send({
-                status: 200,
-                msg: '添加成功'
+              const time = sd.format(new Date(), 'YYYY-MM-DD HH:mm')
+              const createNotices = new Notice({
+                n_senderiid: courseiid,
+                n_getteriid: stuiid,
+                n_sendTtle: '学习通知',
+                n_content: '您已经被老师添加到' + coursename + '课程中了,赶快去学习吧',
+                n_sendtime: time
+              })
+              createNotices.save((err3, reult3) => {
+                if (err3) {
+                  console.log('创建通知失败');
+                }
+                res.send({
+                  status: 200,
+                  msg: '添加成功',
+                })
               })
             }
           })

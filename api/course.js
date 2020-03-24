@@ -76,3 +76,20 @@ module.exports.queryTecCurrentCourseInfo = (req, res) => {
     }
   })
 }
+
+module.exports.queryCoursesNameById = (req, res) => {
+  const courseiid = req.body.courseiid
+  Course.findOne({ _id: courseiid }, (err, result) => {
+    if (err) {
+      res.send({
+        status: 204,
+        msg: '查询失败'
+      })
+    } else {
+      res.send({
+        status: 200,
+        msg: '查询成功'
+      })
+    }
+  })
+}

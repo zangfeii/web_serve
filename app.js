@@ -4,6 +4,7 @@ const createCourseRouter = require('./routes/createCourse')
 const courseStuRouter = require('./routes/courseStu')
 const courseChaptersRouter = require('./routes/courseChapters')
 const courseTopicRouter = require('./routes/courseTopic')
+const noticeRouter = require('./routes/notice')
 const upload = require('./routes/uploadPic')
 const express = require('express')
 const logger = require('morgan')
@@ -83,6 +84,9 @@ app.use('/api/chapters', courseChaptersRouter)
 
 //课程话题
 app.use('/api/Topic', courseTopicRouter)
+
+//通知
+app.use('/api/notice', noticeRouter)
 
 //其他路由
 app.get('/api/contact', (req, res) => {

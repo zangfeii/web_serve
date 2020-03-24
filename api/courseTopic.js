@@ -1,12 +1,16 @@
 const courseTopic = require('../models/courseTopics')
 const User = require('../models/users')
 
+const sd = require('silly-datetime')
+
 module.exports.createCourseTopic = (req, res, next) => {
+  const time = sd.format(new Date(), 'YYYY-MM-DD HH:mm')
   const createTopic = new courseTopic({
     tp_courseiid: req.body.params.courseiid,
     tp_courseTeacheriid: req.body.params.teacheriid,
     tp_topicCreateName: req.body.params.CreateName,
     tp_topicCreateriid: req.body.params.createiid,
+    tp_createTime: time,
     tp_courseTopic: req.body.params.topicData
   })
 

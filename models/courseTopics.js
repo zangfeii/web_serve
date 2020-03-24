@@ -18,8 +18,7 @@ const courseTopicSchema = new Schema({
     type: String
   },
   tp_createTime: {
-    type: Date,
-    default: Date.now()
+    type: String
   },
   tp_courseTopic: {
     type: Object
