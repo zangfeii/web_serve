@@ -5,7 +5,10 @@ const courseStuRouter = require('./routes/courseStu')
 const courseChaptersRouter = require('./routes/courseChapters')
 const courseTopicRouter = require('./routes/courseTopic')
 const noticeRouter = require('./routes/notice')
+const messageRouter = require('./routes/message')
 const upload = require('./routes/uploadPic')
+const upData = require('./routes/upData')
+const studyData = require('./routes/studyData')
 const express = require('express')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
@@ -65,10 +68,15 @@ app.all('*', function(req, res, next) {
 //   }
 // })
 
-
 //用户路由
 app.use('/api/user', userRouter)
 app.use('/api/upload', upload)
+
+//文件上传
+app.use('/api/up', upData)
+
+//记录上传的文件信息
+app.use('/api/upData', studyData)
 
 //课程路由
 //添加删除课程
@@ -87,6 +95,9 @@ app.use('/api/Topic', courseTopicRouter)
 
 //通知
 app.use('/api/notice', noticeRouter)
+
+//消息
+app.use('/api/message', messageRouter)
 
 //其他路由
 app.get('/api/contact', (req, res) => {

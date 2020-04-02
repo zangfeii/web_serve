@@ -3,6 +3,8 @@ const courseStu = require('../models/courseStu')
 const Notice = require('../models/notice')
 const jwt = require('jsonwebtoken')
 
+const getNewStuGiveHaveNoticeTopices = require('../Dao/notice')
+
 const secret = require('../secret')
 const bcrypt = require('bcryptjs')
 const sd = require('silly-datetime')
@@ -249,6 +251,7 @@ module.exports.queryUserIdByNameMobileAdd = (req, res) => {
                 msg: '添加失败'
               })
             } else {
+              getNewStuGiveHaveNoticeTopices(courseiid, stuiid)
               const time = sd.format(new Date(), 'YYYY-MM-DD HH:mm')
               const createNotices = new Notice({
                 n_senderiid: courseiid,

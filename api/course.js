@@ -1,4 +1,5 @@
 const Course = require('../models/courses')
+const Notice = require('../models/notice')
 
 // 根据用户ID查询开的课程
 module.exports.queryCoursesById = (req, res, next) => {
@@ -77,19 +78,32 @@ module.exports.queryTecCurrentCourseInfo = (req, res) => {
   })
 }
 
-module.exports.queryCoursesNameById = (req, res) => {
-  const courseiid = req.body.courseiid
-  Course.findOne({ _id: courseiid }, (err, result) => {
+
+
+//根据接受的课程id 和用户id 判断 是否有该课程
+module.exports.decideIsHaveCourse = (req, res) => {
+  const userid = req.body.useriid
+  const courseid = req.body.courseid
+  Course.find({ cteacheriid: userid, _id: courseid }, (err, result) => {
     if (err) {
-      res.send({
+      return res.send({
         status: 204,
         msg: '查询失败'
       })
     } else {
-      res.send({
-        status: 200,
-        msg: '查询成功'
-      })
+      if (result.length) {
+        res.send({
+          status: 200,
+          msg: '查询成功',
+          data: true
+        })
+      } else {
+        return res.send({
+          status: 200,
+          msg: '查询成功',
+          data: false
+        })
+      }
     }
   })
 }

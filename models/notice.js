@@ -24,6 +24,12 @@ const NoticeSchema = new Schema({
   n_isreaded: {
     type: Boolean,
     default: false
+  },
+  n_istecsend: {
+    type: String,
+  },
+  n_tecsendnoticeiid: {
+    type: String
   }
 }, { collection: 'notice' })
 

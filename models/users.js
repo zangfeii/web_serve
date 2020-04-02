@@ -14,7 +14,7 @@ const UserSchema = new Schema({
   },
   headPic: {
     type: String,
-    default: 'http://127.0.0.1:3000/public/img/user/20200227215047_15915.jpg'
+    default: 'http://127.0.0.1:3000/public/img/defaultUserHeadPic.jpg'
   },
   mobile: {
     type: String

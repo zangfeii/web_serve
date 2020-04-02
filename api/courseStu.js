@@ -1,7 +1,11 @@
 const courseStu = require('../models/courseStu')
+const Notice = require('../models/notice')
+const getNewStuGiveHaveNoticeTopices = require('../Dao/notice')
 
 // 添加课程和学生信息
 module.exports.enterCourse = (req, res, next) => {
+  const courseiid = req.body.cs_courseiid
+  const newStuiid = req.body.cs_stuiid
   const courseEnter = new courseStu({
     // cs_title: req.body.cs_title,
     cs_courseiid: req.body.cs_courseiid,
@@ -19,9 +23,10 @@ module.exports.enterCourse = (req, res, next) => {
         msg: '添加课程失败'
       })
     } else {
+      getNewStuGiveHaveNoticeTopices(courseiid, newStuiid)
       res.send({
         status: 200,
-        msg: '添加课程成功'
+        msg: '添加课程成功 且获取到该课程的通知'
       })
     }
   })
@@ -119,9 +124,4 @@ module.exports.singOutCouseById = (req, res) => {
       })
     }
   })
-}
-
-//老师根据学生名名字和电话添加到课程中学习
-module.exports.addCurrentCourseStuByMobileName = (req, res) => {
-
 }

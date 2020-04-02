@@ -74,9 +74,9 @@ module.exports = router.post('/uploadPic', function(req, res, next) {
           msg: '上传失败'
         })
       } else {
+        console.log('cengong');
         return res.send({
           status: 200,
-          msg: "图片上传成功",
           result: {
             data: avatarName
           }

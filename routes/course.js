@@ -7,5 +7,6 @@ router.post('/queryCourseById', Course.queryCoursesById)
 router.post('/queryCourseByinCode', Course.queryCoursesByInviteCode)
 router.post('/queryEnterCourses', Course.queryUserEnterCoursesByIds)
 router.post('/queryCurrentTecCourseInfo', Course.queryTecCurrentCourseInfo)
-router.post('/queryCurseName', Course.queryCoursesNameById)
+  // router.post('/queryCurseName', Course.queryCoursesNameById)
+router.post('/queryIsHaveCourse', Course.decideIsHaveCourse)
 module.exports = router

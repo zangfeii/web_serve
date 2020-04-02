@@ -10,7 +10,7 @@ const CourseSchema = new Schema({
   },
   cpic: {
     type: String,
-    default: 'http://127.0.0.1:3000/public/img/course/20200302165404_14295.jpg'
+    default: 'http://127.0.0.1:3000/public/img/defaultCoursePic.jpg'
   },
   ctitle: {
     type: String,
