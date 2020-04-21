@@ -9,4 +9,8 @@ router.post('/queryUserInfoById', User.queryUserInfoById)
 router.post('/updateUserPic', User.updateUserPic)
 router.post('/updateUserPwd', User.updateUserPwd)
 router.post('/tecAddCourseStu', User.queryUserIdByNameMobileAdd)
+router.post('/getAllUserSomeInfo', User.getAllUserSomeInfo)
+router.post('/setUserStatus', User.setUserStatus)
+router.post('/setUserRole', User.setUserTecOrStu)
+router.post('/queryUuserByp', User.queryUuserByp)
 module.exports = router

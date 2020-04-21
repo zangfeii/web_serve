@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
   name: {
-    type: String
+    type: String //用户名
   },
   pwd: {
     type: String,
@@ -31,7 +31,7 @@ const UserSchema = new Schema({
   role: {
     // 默认1代表用户初角色未学生,2代表升级为老师,但还保留学生角色的功能
     type: Number,
-    default: 2
+    default: 1
   }
 
 }, { collection: 'users' })

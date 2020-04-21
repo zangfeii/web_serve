@@ -27,10 +27,6 @@ module.exports = router.post('/upData', function(req, res, next) {
         result: ''
       })
     }
-    console.log(files);
-    // console.log(fields);
-    console.log(files.file.name)
-
     let size = ''
     const limit = files.file.size
     if (limit < 0.1 * 1024) { //小于0.1KB，则转化成B
@@ -78,10 +74,8 @@ module.exports = router.post('/upData', function(req, res, next) {
     console.log(dataPic);
 
     // fs.rename(files.file.path, files.file.path, function(err) {
-    fs.rename(files.file.path, newPath, function(err) {
+    fs.rename(files.file.path, newPath, (err) => {
       if (err) {
-        console.log(err);
-        console.log('shibai');
         return res.send({
           status: 204,
           msg: '上传失败',
@@ -89,7 +83,6 @@ module.exports = router.post('/upData', function(req, res, next) {
         })
       } else {
         const datapath = 'http://127.0.0.1:3000/public/data/' + files.file.name
-        console.log('cengong');
         return res.send({
           status: 200,
           msg: "文件上传成功",

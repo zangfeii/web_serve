@@ -112,6 +112,7 @@ module.exports.queryUserListsByIds = (req, res, next) => {
         result1.headPic = resul[index].headPic
         result1._id = resul[index]._id
         result1.name = resul[index].name
+        result1.role = resul[index].role
         result.push(result1)
         result1 = {}
       }
@@ -273,6 +274,163 @@ module.exports.queryUserIdByNameMobileAdd = (req, res) => {
           })
         }
       })
+    }
+  })
+}
+
+//得到所有的用户的部分信息
+module.exports.getAllUserSomeInfo = (req, res) => {
+  const page = req.body.page
+  User.aggregate([{ "$skip": (page - 1) * 5 }, { "$limit": 5 }], (err, result) => {
+    if (err) {
+      res.send({
+        status: 204,
+        msg: '获取用户信息失败'
+      })
+    } else {
+      let usersinfo = []
+      for (let index = 0; index < result.length; index++) {
+        let user = {}
+        user.name = result[index].name
+        user._id = result[index]._id
+        user.headPic = result[index].headPic
+        user.mobile = result[index].mobile
+        user.createTime = result[index].createTime
+        user.role = result[index].role
+        user.status = result[index].status
+        usersinfo.push(user)
+        user = {}
+      }
+      let total = 0
+      User.find((err1, result1) => {
+        if (err1) {
+          total = 0
+        } else {
+          console.log(result1.length);
+          total = result1.length
+          res.send({
+            status: 200,
+            msg: '查询成功',
+            data: usersinfo,
+            total
+          })
+        }
+      })
+
+    }
+  })
+}
+
+
+module.exports.setUserStatus = (req, res) => {
+  const useriid = req.body.useriid
+  User.findOne({ _id: useriid }, (err, result) => {
+    if (err) {
+      return res.send({
+        status: 204,
+        msg: '修改用户状态失败'
+      })
+    } else {
+      console.log(result);
+      const userStatus = result.status
+
+      User.update({ _id: useriid }, { $set: { status: !userStatus } }, (err1, result1) => {
+        if (err1) {
+          return res.send({
+            status: 204,
+            msg: '修改用户状态失败'
+          })
+        } else {
+          return res.send({
+            status: 200,
+            msg: '修改用户状态成功'
+          })
+        }
+      })
+    }
+  })
+}
+
+module.exports.setUserTecOrStu = (req, res) => {
+  const userid = req.body.id
+  User.findOne({ _id: userid }, (err, result) => {
+    if (err) {
+      return res.send({
+        status: 204,
+        msg: '修改用角色失败'
+      })
+    } else {
+      if (result.role === 1) {
+        User.update({ _id: userid }, { $set: { role: 2 } }, (err1, result1) => {
+          if (err1) {
+            res.send({
+              status: 204,
+              msg: '修改用户角色失败'
+            })
+          } else {
+            res.send({
+              status: 200,
+              msg: '修改用户角色成功'
+            })
+          }
+        })
+      }
+      if (result.role === 2) {
+        User.update({ _id: userid }, { $set: { role: 1 } }, (err1, result1) => {
+          if (err1) {
+            res.send({
+              status: 204,
+              msg: '修改用户角色失败'
+            })
+          } else {
+            res.send({
+              status: 200,
+              msg: '修改用户角色成功'
+            })
+          }
+        })
+      }
+    }
+  })
+}
+
+module.exports.queryUuserByp = (req, res) => {
+  const searchp = req.body.searchContent
+  const pageNum = req.body.page
+  const page = (req.body.page - 1) * 5
+  User.find({ name: { $regex: searchp, $options: 'i' } }, (err, result) => {
+    if (err) {
+      return res.send({
+        status: 204,
+        msg: '查询失败'
+      })
+    } else {
+      if (result.length < 5) {
+        return res.send({
+          status: 200,
+          msg: '查询成功',
+          result,
+          total: result.length
+        })
+      } else {
+        var searchResult = []
+        if (pageNum * 5 > result.length) {
+          for (let index = page; index < result.length; index++) {
+            searchResult.push(result[index])
+          }
+        } else {
+          for (let index = page; index < pageNum * 5; index++) {
+            searchResult.push(result[index])
+          }
+        }
+
+        return res.send({
+          status: 200,
+          msg: '查询成功!',
+          result: searchResult,
+          total: result.length
+        })
+      }
     }
   })
 }

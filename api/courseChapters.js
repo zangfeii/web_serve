@@ -81,7 +81,6 @@ module.exports.queryCourseChapters = (req, res, next) => {
       // const courseTitle = {
       //   children: result[0].cc_chapters
       // }
-      console.log(result)
       let sendData = []
       if (!result.length) {
         rsendData = []

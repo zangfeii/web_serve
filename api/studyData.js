@@ -1,5 +1,6 @@
 const studyData = require('../models/studyData')
 const courseStu = require('../models/courseStu')
+const course = require('../models/courses')
 const sd = require('silly-datetime')
 
 module.exports.upStudyData = (req, res) => {
@@ -65,7 +66,7 @@ module.exports.addDownDataNums = (req, res) => {
   studyData.findOne({ _id: dataid }, (err1, result1) => {
     if (err1) {
       return res.send({
-        status: 200,
+        status: 204,
         msg: '下载失败'
       })
     } else {
@@ -83,7 +84,7 @@ module.exports.addDownDataNums = (req, res) => {
               if (err) {
                 return res.send({
                   status: 204,
-                  msg: '展示不能下载'
+                  msg: '暂时不能下载'
                 })
               } else {
                 return res.send({
@@ -93,7 +94,8 @@ module.exports.addDownDataNums = (req, res) => {
               }
             })
           } else {
-            courseStu.find({ cs_courseiid: courseiid, cs_teacheriid: useriid }, (err3, result3) => {
+            //老师下载
+            course.find({ _id: courseiid, cteacheriid: useriid }, (err3, result3) => {
               if (err3) {
                 return res.send({
                   status: 204,
@@ -115,6 +117,23 @@ module.exports.addDownDataNums = (req, res) => {
             })
           }
         }
+      })
+    }
+  })
+}
+
+module.exports.deleteRourse = (req, res) => {
+  const rourseiid = req.body.riid
+  studyData.remove({ _id: rourseiid }, (err, result) => {
+    if (err) {
+      return res.send({
+        status: 204,
+        msg: '删除该资源失败'
+      })
+    } else {
+      return res.send({
+        status: 200,
+        msg: '删除该资源成功'
       })
     }
   })

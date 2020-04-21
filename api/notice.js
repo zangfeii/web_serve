@@ -1,9 +1,10 @@
 const Notice = require('../models/notice')
 const Course = require('../models/courses')
 const courseStu = require('../models/courseStu')
+const User = require('../models/users')
 const sd = require('silly-datetime')
 
-//创建通知
+//查询用户接受到的通知
 module.exports.queryGetNotice = (req, res) => {
   const useriid = req.body.useriid
   Notice.find({ n_getteriid: useriid }, (err, result) => {
@@ -17,6 +18,24 @@ module.exports.queryGetNotice = (req, res) => {
         status: 200,
         msg: '查询通知成功',
         notices: result
+      })
+    }
+  })
+}
+
+module.exports.getAdminNotices = (req, res) => {
+  const id = req.body.id
+  Notice.find({ n_istecsend: id, n_sendTtle: '通知' }, (err, result) => {
+    if (err) {
+      res.send({
+        status: 204,
+        msg: '查询当前发送的话题失败'
+      })
+    } else {
+      res.send({
+        status: 200,
+        msg: '查询发送的话题成功',
+        result
       })
     }
   })
@@ -43,11 +62,20 @@ module.exports.setNoticeRead = (req, res) => {
               msg: '查询失败'
             })
           } else {
-            return res.send({
-              status: 200,
-              msg: '查询设置成功',
-              data: result2.ctitle
-            })
+            if (result2) {
+              return res.send({
+                status: 200,
+                msg: '查询设置成功',
+                data: result2.ctitle
+              })
+            } else {
+              return res.send({
+                status: 200,
+                msg: '查询设置成功',
+                data: '官方'
+              })
+            }
+
           }
         })
       } else {
@@ -207,6 +235,75 @@ module.exports.stuGetCurrentCourseNotices = (req, res) => {
         msg: '获取当前课程收到的通知成功',
         result
       })
+    }
+  })
+}
+
+//管理员警告课程题目或图片内容
+module.exports.sendWaringCourseNotice = (req, res) => {
+  const sendid = req.body.sendid
+  const tecid = req.body.id
+  const courseName = req.body.courseName
+  const time = sd.format(new Date(), 'YYYY-MM-DD HH:mm')
+  const notice = new Notice({
+    n_senderiid: sendid,
+    n_sendTtle: '警告!',
+    n_content: '尊敬的用户您好,您的' + courseName + ',该课程封面存在问题,请尽快修改,否则会禁封该课程,严重者禁封用户账号',
+    n_getteriid: tecid,
+    n_sendtime: time
+  })
+  notice.save((err, result) => {
+    if (err) {
+      res.send({
+        status: 204,
+        msg: '发送警告失败'
+      })
+    } else {
+      res.send({
+        status: 200,
+        msg: '发送警告成功'
+      })
+    }
+  })
+}
+
+module.exports.sendSysNotice = (req, res) => {
+  const sendid = req.body.sendid
+  const content = req.body.content
+  User.find((err, result) => {
+    if (err) {
+      return res.send({
+        status: 204,
+        msg: '发送失败'
+      })
+    } else {
+      const time = sd.format(new Date(), 'YYYY-MM-DD HH:mm')
+      const notice = new Notice({
+        n_senderiid: sendid,
+        n_sendTtle: '通知',
+        n_content: content,
+        n_istecsend: sendid,
+        n_sendtime: time
+      })
+      notice.save((err2, result2) => {})
+      let sendNums = 0
+      for (let index = 0; index < result.length; index++) {
+        const notices = new Notice({
+          n_senderiid: sendid,
+          n_sendTtle: '通知',
+          n_content: content,
+          n_getteriid: result[index]._id,
+          n_sendtime: time
+        })
+        sendNums = sendNums + 1
+        notices.save((err1, result1) => {})
+        if (sendNums === result.length) {
+          res.send({
+            status: 200,
+            msg: '发送通知成功'
+          })
+        }
+      }
     }
   })
 }

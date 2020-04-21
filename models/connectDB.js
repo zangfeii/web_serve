@@ -4,9 +4,9 @@ mongoose.set('useFindAndModify', false)
 
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
   if (err) {
-    console.log('数据库链接失败');
+    console.log('数据库链接失败')
   } else {
-    console.log('数据库链接成功');
+    console.log('数据库链接成功')
   }
 })
 
